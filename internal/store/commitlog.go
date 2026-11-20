@@ -171,3 +171,31 @@ func (c *CommitLog) Read(offset int64) ([]byte, int64, error) {
 
 	return data, nextOffset, nil
 }
+
+func (c *CommitLog) GetLastAppliedIndex() uint64 {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	return c.state.LastAppliedIndex
+}
+
+func (c *CommitLog) SetCommitLogState(index uint64, producerID uint64, sequence uint64) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	c.state.LastAppliedIndex = index
+	c.state.ProducerLastSequence[producerID] = sequence
+
+	return c.PersistState()
+}
+
+func (c *CommitLog) Close() error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	if err := c.file.Close(); err != nil {
+		return fmt.Errorf("failed to close commit log file: %w", err)
+	}
+
+	return nil
+}
