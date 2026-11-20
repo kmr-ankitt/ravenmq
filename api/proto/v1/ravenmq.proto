@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package ravenmq.v1;
+
+option go_package = "github.com/kmr-ankitt/ravenmq/api/proto/v1;ravenmqv1";
+
+enum ErrorCode {
+  ERROR_CODE_UNSPECIFIED = 0;
+  ERROR_CODE_NONE = 1;
+  ERROR_CODE_NOT_LEADER = 2;
+  ERROR_CODE_TOPIC_NOT_FOUND = 3;
+  ERROR_CODE_OFFSET_OUT_OF_BOUNDS = 4;
+}
+
+enum AckLevel {
+  ACK_LEVEL_UNSPECIFIED = 0;
+  ACK_LEVEL_LEADER = 1; // Leader writes to local disk and responds
+  ACK_LEVEL_ALL = 2;    // Wait for Raft quorum to commit
+}
+
+service BrokerService {
+    rpc Produce(ProduceRequest) returns (ProduceResponse);
+    rpc Consume(ConsumeRequest) returns (ConsumeResponse);
+}
+
+// A single record or message.
+message Record {
+    bytes value = 1; // The message payload
+    int64 offset = 2;  // The offset of the message in the topic
+}
+
+// Request to produce a message to a topic.
+message ProduceRequest {
+    string topic = 1; // Name of the destination topic.
+    int32 partition = 2; // Partition to which the record is written.
+    bytes value = 3; // Message payload.
+    uint64 producer_id = 4; // Stable identifier for the producer.
+    uint64 sequence_number = 5; // Per-producer sequence number for deduplication.
+    AckLevel ack = 6; // Required acknowledgement level.
+}
+
+// Response to a produce request.
+message ProduceResponse {
+    int64 offset = 1; // Assigned offset of the produced record.
+    ErrorCode error_code = 2; // Result of the produce operation.
+    string leader_address = 3; // Address of the current partition leader, if applicable.
+}
+
+// Request to consume a message from a topic.
+message ConsumeRequest {
+    string topic = 1; // Name of the source topic.
+    int32 partition = 2; // Partition from which to read.
+    int64 offset = 3; // Offset of the record to read.
+}
+
+// Response to a consume request.
+message ConsumeResponse {
+    Record record = 1; // Retrieved record, if the request succeeded.
+    ErrorCode error_code = 2; // Result of the consume operation.
+    string leader_address = 3; // Address of the current partition leader, if applicable.
+}
