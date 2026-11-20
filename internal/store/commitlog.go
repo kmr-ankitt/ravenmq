@@ -70,6 +70,7 @@ func NewCommitLog(path string) (*CommitLog, error) {
 	}
 
 	if err := c.LoadState(); err != nil {
+		file.Close()
 		return nil, fmt.Errorf("failed to load commit log state: %w", err)
 	}
 
@@ -88,7 +89,14 @@ func (c *CommitLog) LoadState() error {
 		return err
 	}
 
-	return json.Unmarshal(data, &c.state)
+	if err := json.Unmarshal(data, &c.state); err != nil {
+		return err
+	}
+	if c.state.ProducerLastSequence == nil {
+		c.state.ProducerLastSequence = make(map[uint64]uint64)
+	}
+
+	return nil
 }
 
 // persiststate writes the current state of the commit log to the .state file.
