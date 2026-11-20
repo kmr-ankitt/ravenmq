@@ -69,7 +69,7 @@ func NewCommitLog(path string) (*CommitLog, error) {
 		statePath: path + ".state",
 	}
 
-	if err := c.loadState(); err != nil {
+	if err := c.LoadState(); err != nil {
 		return nil, fmt.Errorf("failed to load commit log state: %w", err)
 	}
 
@@ -78,8 +78,8 @@ func NewCommitLog(path string) (*CommitLog, error) {
 
 // loadState reads the .state file from disk.
 // if state file doesn't exist, start with a fresh state.
-func (c *CommitLog) LoadState(path string) error {
-	data, err := os.ReadFile(path)
+func (c *CommitLog) LoadState() error {
+	data, err := os.ReadFile(c.statePath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			c.state = commitLogState{LastAppliedIndex: 0, ProducerLastSequence: make(map[uint64]uint64)}
