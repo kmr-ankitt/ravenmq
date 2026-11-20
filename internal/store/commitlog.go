@@ -1,6 +1,7 @@
 package store
 
 import (
+	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -107,4 +108,66 @@ func (c *CommitLog) PersistState() error {
 	}
 
 	return os.WriteFile(c.statePath, data, 0644)
+}
+
+/*
+AppendIdempotent appends a message to the commit log in an idempotent manner.
+it checks the producer's last sequence number to ensure that duplicate messages are not appended.
+if the message is a duplicate, it returns -1 and does not append the message,
+else it appends the message to the commit log and returns the position of the appended message.
+*/
+func (c *CommitLog) AppendIdempotent(producerID uint64, sequence uint64, message []byte) (int64, error) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	lastSeq, ok := c.state.ProducerLastSequence[producerID]
+	if ok && sequence <= lastSeq {
+		fmt.Println("duplicate was skipped")
+		return -1, nil
+	}
+
+	pos := c.size
+	var lenBuf [lenWidth]byte
+
+	binary.BigEndian.PutUint64(lenBuf[:], uint64(len(message)))
+	if _, err := c.file.Write(lenBuf[:]); err != nil {
+		return 0, fmt.Errorf("failed to write record length: %w", err)
+	}
+
+	if _, err := c.file.Write(message); err != nil {
+		return 0, fmt.Errorf("failed to write record: %w", err)
+	}
+
+	c.size += int64(lenWidth + len(message))
+
+	return pos, nil
+}
+
+// Read reads a message from the commit log at the specified offset.
+// it returns the message, the next offset, and an error if any.
+func (c *CommitLog) Read(offset int64) ([]byte, int64, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	if offset < 0 || offset >= c.size {
+		return nil, 0, fmt.Errorf("offset %d: %w", offset, ErrOffsetOutOfBounds)
+	}
+
+	// read the length of the record at the specified offset
+	lenBuf := make([]byte, lenWidth)
+	if _, err := c.file.ReadAt(lenBuf, offset); err != nil {
+		return nil, 0, fmt.Errorf("failed to read record length: %w", err)
+	}
+
+	recordLen := binary.BigEndian.Uint64(lenBuf)
+
+	// read the actual record data based on the length read
+	data := make([]byte, recordLen)
+	if _, err := c.file.ReadAt(data, offset+lenWidth); err != nil {
+		return nil, 0, fmt.Errorf("failed to read record: %w", err)
+	}
+
+	nextOffset := offset + lenWidth + int64(recordLen)
+
+	return data, nextOffset, nil
 }
