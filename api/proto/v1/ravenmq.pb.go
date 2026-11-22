@@ -446,6 +446,570 @@ func (x *ConsumeResponse) GetLeaderAddress() string {
 	return ""
 }
 
+type JoinClusterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	NodeId        string                 `protobuf:"bytes,1,opt,name=node_id,json=nodeId,proto3" json:"node_id,omitempty"`
+	RaftAddr      string                 `protobuf:"bytes,2,opt,name=raft_addr,json=raftAddr,proto3" json:"raft_addr,omitempty"`
+	GrpcAddr      string                 `protobuf:"bytes,3,opt,name=grpc_addr,json=grpcAddr,proto3" json:"grpc_addr,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JoinClusterRequest) Reset() {
+	*x = JoinClusterRequest{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JoinClusterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JoinClusterRequest) ProtoMessage() {}
+
+func (x *JoinClusterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JoinClusterRequest.ProtoReflect.Descriptor instead.
+func (*JoinClusterRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *JoinClusterRequest) GetNodeId() string {
+	if x != nil {
+		return x.NodeId
+	}
+	return ""
+}
+
+func (x *JoinClusterRequest) GetRaftAddr() string {
+	if x != nil {
+		return x.RaftAddr
+	}
+	return ""
+}
+
+func (x *JoinClusterRequest) GetGrpcAddr() string {
+	if x != nil {
+		return x.GrpcAddr
+	}
+	return ""
+}
+
+type JoinClusterResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	LeaderAddress string                 `protobuf:"bytes,2,opt,name=leader_address,json=leaderAddress,proto3" json:"leader_address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *JoinClusterResponse) Reset() {
+	*x = JoinClusterResponse{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *JoinClusterResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*JoinClusterResponse) ProtoMessage() {}
+
+func (x *JoinClusterResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use JoinClusterResponse.ProtoReflect.Descriptor instead.
+func (*JoinClusterResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *JoinClusterResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *JoinClusterResponse) GetLeaderAddress() string {
+	if x != nil {
+		return x.LeaderAddress
+	}
+	return ""
+}
+
+type RegisterBrokerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BrokerId      int32                  `protobuf:"varint,1,opt,name=broker_id,json=brokerId,proto3" json:"broker_id,omitempty"`
+	GrpcAddr      string                 `protobuf:"bytes,2,opt,name=grpc_addr,json=grpcAddr,proto3" json:"grpc_addr,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterBrokerRequest) Reset() {
+	*x = RegisterBrokerRequest{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterBrokerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterBrokerRequest) ProtoMessage() {}
+
+func (x *RegisterBrokerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterBrokerRequest.ProtoReflect.Descriptor instead.
+func (*RegisterBrokerRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *RegisterBrokerRequest) GetBrokerId() int32 {
+	if x != nil {
+		return x.BrokerId
+	}
+	return 0
+}
+
+func (x *RegisterBrokerRequest) GetGrpcAddr() string {
+	if x != nil {
+		return x.GrpcAddr
+	}
+	return ""
+}
+
+type RegisterBrokerResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	LeaderAddress string                 `protobuf:"bytes,2,opt,name=leader_address,json=leaderAddress,proto3" json:"leader_address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterBrokerResponse) Reset() {
+	*x = RegisterBrokerResponse{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterBrokerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterBrokerResponse) ProtoMessage() {}
+
+func (x *RegisterBrokerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterBrokerResponse.ProtoReflect.Descriptor instead.
+func (*RegisterBrokerResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *RegisterBrokerResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *RegisterBrokerResponse) GetLeaderAddress() string {
+	if x != nil {
+		return x.LeaderAddress
+	}
+	return ""
+}
+
+type CreateTopicRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Topic         string                 `protobuf:"bytes,1,opt,name=topic,proto3" json:"topic,omitempty"`
+	Partitions    int32                  `protobuf:"varint,2,opt,name=partitions,proto3" json:"partitions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateTopicRequest) Reset() {
+	*x = CreateTopicRequest{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateTopicRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateTopicRequest) ProtoMessage() {}
+
+func (x *CreateTopicRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateTopicRequest.ProtoReflect.Descriptor instead.
+func (*CreateTopicRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *CreateTopicRequest) GetTopic() string {
+	if x != nil {
+		return x.Topic
+	}
+	return ""
+}
+
+func (x *CreateTopicRequest) GetPartitions() int32 {
+	if x != nil {
+		return x.Partitions
+	}
+	return 0
+}
+
+type CreateTopicResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ErrorCode     ErrorCode              `protobuf:"varint,1,opt,name=error_code,json=errorCode,proto3,enum=ravenmq.v1.ErrorCode" json:"error_code,omitempty"`
+	LeaderAddress string                 `protobuf:"bytes,2,opt,name=leader_address,json=leaderAddress,proto3" json:"leader_address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateTopicResponse) Reset() {
+	*x = CreateTopicResponse{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateTopicResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateTopicResponse) ProtoMessage() {}
+
+func (x *CreateTopicResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateTopicResponse.ProtoReflect.Descriptor instead.
+func (*CreateTopicResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CreateTopicResponse) GetErrorCode() ErrorCode {
+	if x != nil {
+		return x.ErrorCode
+	}
+	return ErrorCode_ERROR_CODE_UNSPECIFIED
+}
+
+func (x *CreateTopicResponse) GetLeaderAddress() string {
+	if x != nil {
+		return x.LeaderAddress
+	}
+	return ""
+}
+
+type GetClusterMetadataRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetClusterMetadataRequest) Reset() {
+	*x = GetClusterMetadataRequest{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetClusterMetadataRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetClusterMetadataRequest) ProtoMessage() {}
+
+func (x *GetClusterMetadataRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetClusterMetadataRequest.ProtoReflect.Descriptor instead.
+func (*GetClusterMetadataRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{11}
+}
+
+type BrokerInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BrokerId      int32                  `protobuf:"varint,1,opt,name=broker_id,json=brokerId,proto3" json:"broker_id,omitempty"`
+	GrpcAddr      string                 `protobuf:"bytes,2,opt,name=grpc_addr,json=grpcAddr,proto3" json:"grpc_addr,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BrokerInfo) Reset() {
+	*x = BrokerInfo{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BrokerInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BrokerInfo) ProtoMessage() {}
+
+func (x *BrokerInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BrokerInfo.ProtoReflect.Descriptor instead.
+func (*BrokerInfo) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *BrokerInfo) GetBrokerId() int32 {
+	if x != nil {
+		return x.BrokerId
+	}
+	return 0
+}
+
+func (x *BrokerInfo) GetGrpcAddr() string {
+	if x != nil {
+		return x.GrpcAddr
+	}
+	return ""
+}
+
+type PartitionInfo struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	PartitionId    int32                  `protobuf:"varint,1,opt,name=partition_id,json=partitionId,proto3" json:"partition_id,omitempty"`
+	LeaderBrokerId int32                  `protobuf:"varint,2,opt,name=leader_broker_id,json=leaderBrokerId,proto3" json:"leader_broker_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *PartitionInfo) Reset() {
+	*x = PartitionInfo{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PartitionInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PartitionInfo) ProtoMessage() {}
+
+func (x *PartitionInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PartitionInfo.ProtoReflect.Descriptor instead.
+func (*PartitionInfo) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *PartitionInfo) GetPartitionId() int32 {
+	if x != nil {
+		return x.PartitionId
+	}
+	return 0
+}
+
+func (x *PartitionInfo) GetLeaderBrokerId() int32 {
+	if x != nil {
+		return x.LeaderBrokerId
+	}
+	return 0
+}
+
+type TopicMetadata struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Topic         string                 `protobuf:"bytes,1,opt,name=topic,proto3" json:"topic,omitempty"`
+	Partitions    []*PartitionInfo       `protobuf:"bytes,2,rep,name=partitions,proto3" json:"partitions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TopicMetadata) Reset() {
+	*x = TopicMetadata{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TopicMetadata) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TopicMetadata) ProtoMessage() {}
+
+func (x *TopicMetadata) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TopicMetadata.ProtoReflect.Descriptor instead.
+func (*TopicMetadata) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *TopicMetadata) GetTopic() string {
+	if x != nil {
+		return x.Topic
+	}
+	return ""
+}
+
+func (x *TopicMetadata) GetPartitions() []*PartitionInfo {
+	if x != nil {
+		return x.Partitions
+	}
+	return nil
+}
+
+type GetClusterMetadataResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Brokers       []*BrokerInfo          `protobuf:"bytes,1,rep,name=brokers,proto3" json:"brokers,omitempty"`
+	Topics        []*TopicMetadata       `protobuf:"bytes,2,rep,name=topics,proto3" json:"topics,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetClusterMetadataResponse) Reset() {
+	*x = GetClusterMetadataResponse{}
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetClusterMetadataResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetClusterMetadataResponse) ProtoMessage() {}
+
+func (x *GetClusterMetadataResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_v1_ravenmq_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetClusterMetadataResponse.ProtoReflect.Descriptor instead.
+func (*GetClusterMetadataResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_v1_ravenmq_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *GetClusterMetadataResponse) GetBrokers() []*BrokerInfo {
+	if x != nil {
+		return x.Brokers
+	}
+	return nil
+}
+
+func (x *GetClusterMetadataResponse) GetTopics() []*TopicMetadata {
+	if x != nil {
+		return x.Topics
+	}
+	return nil
+}
+
 var File_api_proto_v1_ravenmq_proto protoreflect.FileDescriptor
 
 const file_api_proto_v1_ravenmq_proto_rawDesc = "" +
@@ -476,7 +1040,45 @@ const file_api_proto_v1_ravenmq_proto_rawDesc = "" +
 	"\x06record\x18\x01 \x01(\v2\x12.ravenmq.v1.RecordR\x06record\x124\n" +
 	"\n" +
 	"error_code\x18\x02 \x01(\x0e2\x15.ravenmq.v1.ErrorCodeR\terrorCode\x12%\n" +
-	"\x0eleader_address\x18\x03 \x01(\tR\rleaderAddress*\x9c\x01\n" +
+	"\x0eleader_address\x18\x03 \x01(\tR\rleaderAddress\"g\n" +
+	"\x12JoinClusterRequest\x12\x17\n" +
+	"\anode_id\x18\x01 \x01(\tR\x06nodeId\x12\x1b\n" +
+	"\traft_addr\x18\x02 \x01(\tR\braftAddr\x12\x1b\n" +
+	"\tgrpc_addr\x18\x03 \x01(\tR\bgrpcAddr\"V\n" +
+	"\x13JoinClusterResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12%\n" +
+	"\x0eleader_address\x18\x02 \x01(\tR\rleaderAddress\"Q\n" +
+	"\x15RegisterBrokerRequest\x12\x1b\n" +
+	"\tbroker_id\x18\x01 \x01(\x05R\bbrokerId\x12\x1b\n" +
+	"\tgrpc_addr\x18\x02 \x01(\tR\bgrpcAddr\"Y\n" +
+	"\x16RegisterBrokerResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12%\n" +
+	"\x0eleader_address\x18\x02 \x01(\tR\rleaderAddress\"J\n" +
+	"\x12CreateTopicRequest\x12\x14\n" +
+	"\x05topic\x18\x01 \x01(\tR\x05topic\x12\x1e\n" +
+	"\n" +
+	"partitions\x18\x02 \x01(\x05R\n" +
+	"partitions\"r\n" +
+	"\x13CreateTopicResponse\x124\n" +
+	"\n" +
+	"error_code\x18\x01 \x01(\x0e2\x15.ravenmq.v1.ErrorCodeR\terrorCode\x12%\n" +
+	"\x0eleader_address\x18\x02 \x01(\tR\rleaderAddress\"\x1b\n" +
+	"\x19GetClusterMetadataRequest\"F\n" +
+	"\n" +
+	"BrokerInfo\x12\x1b\n" +
+	"\tbroker_id\x18\x01 \x01(\x05R\bbrokerId\x12\x1b\n" +
+	"\tgrpc_addr\x18\x02 \x01(\tR\bgrpcAddr\"\\\n" +
+	"\rPartitionInfo\x12!\n" +
+	"\fpartition_id\x18\x01 \x01(\x05R\vpartitionId\x12(\n" +
+	"\x10leader_broker_id\x18\x02 \x01(\x05R\x0eleaderBrokerId\"`\n" +
+	"\rTopicMetadata\x12\x14\n" +
+	"\x05topic\x18\x01 \x01(\tR\x05topic\x129\n" +
+	"\n" +
+	"partitions\x18\x02 \x03(\v2\x19.ravenmq.v1.PartitionInfoR\n" +
+	"partitions\"\x81\x01\n" +
+	"\x1aGetClusterMetadataResponse\x120\n" +
+	"\abrokers\x18\x01 \x03(\v2\x16.ravenmq.v1.BrokerInfoR\abrokers\x121\n" +
+	"\x06topics\x18\x02 \x03(\v2\x19.ravenmq.v1.TopicMetadataR\x06topics*\x9c\x01\n" +
 	"\tErrorCode\x12\x1a\n" +
 	"\x16ERROR_CODE_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fERROR_CODE_NONE\x10\x01\x12\x19\n" +
@@ -489,7 +1091,12 @@ const file_api_proto_v1_ravenmq_proto_rawDesc = "" +
 	"\rACK_LEVEL_ALL\x10\x022\x97\x01\n" +
 	"\rBrokerService\x12B\n" +
 	"\aProduce\x12\x1a.ravenmq.v1.ProduceRequest\x1a\x1b.ravenmq.v1.ProduceResponse\x12B\n" +
-	"\aConsume\x12\x1a.ravenmq.v1.ConsumeRequest\x1a\x1b.ravenmq.v1.ConsumeResponseB6Z4github.com/kmr-ankitt/ravenmq/api/proto/v1;ravenmqv1b\x06proto3"
+	"\aConsume\x12\x1a.ravenmq.v1.ConsumeRequest\x1a\x1b.ravenmq.v1.ConsumeResponse2\xf2\x02\n" +
+	"\x12CoordinatorService\x12N\n" +
+	"\vJoinCluster\x12\x1e.ravenmq.v1.JoinClusterRequest\x1a\x1f.ravenmq.v1.JoinClusterResponse\x12W\n" +
+	"\x0eRegisterBroker\x12!.ravenmq.v1.RegisterBrokerRequest\x1a\".ravenmq.v1.RegisterBrokerResponse\x12N\n" +
+	"\vCreateTopic\x12\x1e.ravenmq.v1.CreateTopicRequest\x1a\x1f.ravenmq.v1.CreateTopicResponse\x12c\n" +
+	"\x12GetClusterMetadata\x12%.ravenmq.v1.GetClusterMetadataRequest\x1a&.ravenmq.v1.GetClusterMetadataResponseB6Z4github.com/kmr-ankitt/ravenmq/api/proto/v1;ravenmqv1b\x06proto3"
 
 var (
 	file_api_proto_v1_ravenmq_proto_rawDescOnce sync.Once
@@ -504,30 +1111,53 @@ func file_api_proto_v1_ravenmq_proto_rawDescGZIP() []byte {
 }
 
 var file_api_proto_v1_ravenmq_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_api_proto_v1_ravenmq_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_api_proto_v1_ravenmq_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_api_proto_v1_ravenmq_proto_goTypes = []any{
-	(ErrorCode)(0),          // 0: ravenmq.v1.ErrorCode
-	(AckLevel)(0),           // 1: ravenmq.v1.AckLevel
-	(*Record)(nil),          // 2: ravenmq.v1.Record
-	(*ProduceRequest)(nil),  // 3: ravenmq.v1.ProduceRequest
-	(*ProduceResponse)(nil), // 4: ravenmq.v1.ProduceResponse
-	(*ConsumeRequest)(nil),  // 5: ravenmq.v1.ConsumeRequest
-	(*ConsumeResponse)(nil), // 6: ravenmq.v1.ConsumeResponse
+	(ErrorCode)(0),                     // 0: ravenmq.v1.ErrorCode
+	(AckLevel)(0),                      // 1: ravenmq.v1.AckLevel
+	(*Record)(nil),                     // 2: ravenmq.v1.Record
+	(*ProduceRequest)(nil),             // 3: ravenmq.v1.ProduceRequest
+	(*ProduceResponse)(nil),            // 4: ravenmq.v1.ProduceResponse
+	(*ConsumeRequest)(nil),             // 5: ravenmq.v1.ConsumeRequest
+	(*ConsumeResponse)(nil),            // 6: ravenmq.v1.ConsumeResponse
+	(*JoinClusterRequest)(nil),         // 7: ravenmq.v1.JoinClusterRequest
+	(*JoinClusterResponse)(nil),        // 8: ravenmq.v1.JoinClusterResponse
+	(*RegisterBrokerRequest)(nil),      // 9: ravenmq.v1.RegisterBrokerRequest
+	(*RegisterBrokerResponse)(nil),     // 10: ravenmq.v1.RegisterBrokerResponse
+	(*CreateTopicRequest)(nil),         // 11: ravenmq.v1.CreateTopicRequest
+	(*CreateTopicResponse)(nil),        // 12: ravenmq.v1.CreateTopicResponse
+	(*GetClusterMetadataRequest)(nil),  // 13: ravenmq.v1.GetClusterMetadataRequest
+	(*BrokerInfo)(nil),                 // 14: ravenmq.v1.BrokerInfo
+	(*PartitionInfo)(nil),              // 15: ravenmq.v1.PartitionInfo
+	(*TopicMetadata)(nil),              // 16: ravenmq.v1.TopicMetadata
+	(*GetClusterMetadataResponse)(nil), // 17: ravenmq.v1.GetClusterMetadataResponse
 }
 var file_api_proto_v1_ravenmq_proto_depIdxs = []int32{
-	1, // 0: ravenmq.v1.ProduceRequest.ack:type_name -> ravenmq.v1.AckLevel
-	0, // 1: ravenmq.v1.ProduceResponse.error_code:type_name -> ravenmq.v1.ErrorCode
-	2, // 2: ravenmq.v1.ConsumeResponse.record:type_name -> ravenmq.v1.Record
-	0, // 3: ravenmq.v1.ConsumeResponse.error_code:type_name -> ravenmq.v1.ErrorCode
-	3, // 4: ravenmq.v1.BrokerService.Produce:input_type -> ravenmq.v1.ProduceRequest
-	5, // 5: ravenmq.v1.BrokerService.Consume:input_type -> ravenmq.v1.ConsumeRequest
-	4, // 6: ravenmq.v1.BrokerService.Produce:output_type -> ravenmq.v1.ProduceResponse
-	6, // 7: ravenmq.v1.BrokerService.Consume:output_type -> ravenmq.v1.ConsumeResponse
-	6, // [6:8] is the sub-list for method output_type
-	4, // [4:6] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	1,  // 0: ravenmq.v1.ProduceRequest.ack:type_name -> ravenmq.v1.AckLevel
+	0,  // 1: ravenmq.v1.ProduceResponse.error_code:type_name -> ravenmq.v1.ErrorCode
+	2,  // 2: ravenmq.v1.ConsumeResponse.record:type_name -> ravenmq.v1.Record
+	0,  // 3: ravenmq.v1.ConsumeResponse.error_code:type_name -> ravenmq.v1.ErrorCode
+	0,  // 4: ravenmq.v1.CreateTopicResponse.error_code:type_name -> ravenmq.v1.ErrorCode
+	15, // 5: ravenmq.v1.TopicMetadata.partitions:type_name -> ravenmq.v1.PartitionInfo
+	14, // 6: ravenmq.v1.GetClusterMetadataResponse.brokers:type_name -> ravenmq.v1.BrokerInfo
+	16, // 7: ravenmq.v1.GetClusterMetadataResponse.topics:type_name -> ravenmq.v1.TopicMetadata
+	3,  // 8: ravenmq.v1.BrokerService.Produce:input_type -> ravenmq.v1.ProduceRequest
+	5,  // 9: ravenmq.v1.BrokerService.Consume:input_type -> ravenmq.v1.ConsumeRequest
+	7,  // 10: ravenmq.v1.CoordinatorService.JoinCluster:input_type -> ravenmq.v1.JoinClusterRequest
+	9,  // 11: ravenmq.v1.CoordinatorService.RegisterBroker:input_type -> ravenmq.v1.RegisterBrokerRequest
+	11, // 12: ravenmq.v1.CoordinatorService.CreateTopic:input_type -> ravenmq.v1.CreateTopicRequest
+	13, // 13: ravenmq.v1.CoordinatorService.GetClusterMetadata:input_type -> ravenmq.v1.GetClusterMetadataRequest
+	4,  // 14: ravenmq.v1.BrokerService.Produce:output_type -> ravenmq.v1.ProduceResponse
+	6,  // 15: ravenmq.v1.BrokerService.Consume:output_type -> ravenmq.v1.ConsumeResponse
+	8,  // 16: ravenmq.v1.CoordinatorService.JoinCluster:output_type -> ravenmq.v1.JoinClusterResponse
+	10, // 17: ravenmq.v1.CoordinatorService.RegisterBroker:output_type -> ravenmq.v1.RegisterBrokerResponse
+	12, // 18: ravenmq.v1.CoordinatorService.CreateTopic:output_type -> ravenmq.v1.CreateTopicResponse
+	17, // 19: ravenmq.v1.CoordinatorService.GetClusterMetadata:output_type -> ravenmq.v1.GetClusterMetadataResponse
+	14, // [14:20] is the sub-list for method output_type
+	8,  // [8:14] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_v1_ravenmq_proto_init() }
@@ -541,9 +1171,9 @@ func file_api_proto_v1_ravenmq_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_v1_ravenmq_proto_rawDesc), len(file_api_proto_v1_ravenmq_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   5,
+			NumMessages:   16,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_api_proto_v1_ravenmq_proto_goTypes,
 		DependencyIndexes: file_api_proto_v1_ravenmq_proto_depIdxs,

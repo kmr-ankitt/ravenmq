@@ -157,3 +157,219 @@ var BrokerService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "api/proto/v1/ravenmq.proto",
 }
+
+const (
+	CoordinatorService_JoinCluster_FullMethodName        = "/ravenmq.v1.CoordinatorService/JoinCluster"
+	CoordinatorService_RegisterBroker_FullMethodName     = "/ravenmq.v1.CoordinatorService/RegisterBroker"
+	CoordinatorService_CreateTopic_FullMethodName        = "/ravenmq.v1.CoordinatorService/CreateTopic"
+	CoordinatorService_GetClusterMetadata_FullMethodName = "/ravenmq.v1.CoordinatorService/GetClusterMetadata"
+)
+
+// CoordinatorServiceClient is the client API for CoordinatorService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type CoordinatorServiceClient interface {
+	JoinCluster(ctx context.Context, in *JoinClusterRequest, opts ...grpc.CallOption) (*JoinClusterResponse, error)
+	RegisterBroker(ctx context.Context, in *RegisterBrokerRequest, opts ...grpc.CallOption) (*RegisterBrokerResponse, error)
+	CreateTopic(ctx context.Context, in *CreateTopicRequest, opts ...grpc.CallOption) (*CreateTopicResponse, error)
+	GetClusterMetadata(ctx context.Context, in *GetClusterMetadataRequest, opts ...grpc.CallOption) (*GetClusterMetadataResponse, error)
+}
+
+type coordinatorServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewCoordinatorServiceClient(cc grpc.ClientConnInterface) CoordinatorServiceClient {
+	return &coordinatorServiceClient{cc}
+}
+
+func (c *coordinatorServiceClient) JoinCluster(ctx context.Context, in *JoinClusterRequest, opts ...grpc.CallOption) (*JoinClusterResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(JoinClusterResponse)
+	err := c.cc.Invoke(ctx, CoordinatorService_JoinCluster_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorServiceClient) RegisterBroker(ctx context.Context, in *RegisterBrokerRequest, opts ...grpc.CallOption) (*RegisterBrokerResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RegisterBrokerResponse)
+	err := c.cc.Invoke(ctx, CoordinatorService_RegisterBroker_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorServiceClient) CreateTopic(ctx context.Context, in *CreateTopicRequest, opts ...grpc.CallOption) (*CreateTopicResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateTopicResponse)
+	err := c.cc.Invoke(ctx, CoordinatorService_CreateTopic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coordinatorServiceClient) GetClusterMetadata(ctx context.Context, in *GetClusterMetadataRequest, opts ...grpc.CallOption) (*GetClusterMetadataResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetClusterMetadataResponse)
+	err := c.cc.Invoke(ctx, CoordinatorService_GetClusterMetadata_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// CoordinatorServiceServer is the server API for CoordinatorService service.
+// All implementations must embed UnimplementedCoordinatorServiceServer
+// for forward compatibility.
+type CoordinatorServiceServer interface {
+	JoinCluster(context.Context, *JoinClusterRequest) (*JoinClusterResponse, error)
+	RegisterBroker(context.Context, *RegisterBrokerRequest) (*RegisterBrokerResponse, error)
+	CreateTopic(context.Context, *CreateTopicRequest) (*CreateTopicResponse, error)
+	GetClusterMetadata(context.Context, *GetClusterMetadataRequest) (*GetClusterMetadataResponse, error)
+	mustEmbedUnimplementedCoordinatorServiceServer()
+}
+
+// UnimplementedCoordinatorServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedCoordinatorServiceServer struct{}
+
+func (UnimplementedCoordinatorServiceServer) JoinCluster(context.Context, *JoinClusterRequest) (*JoinClusterResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method JoinCluster not implemented")
+}
+func (UnimplementedCoordinatorServiceServer) RegisterBroker(context.Context, *RegisterBrokerRequest) (*RegisterBrokerResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RegisterBroker not implemented")
+}
+func (UnimplementedCoordinatorServiceServer) CreateTopic(context.Context, *CreateTopicRequest) (*CreateTopicResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateTopic not implemented")
+}
+func (UnimplementedCoordinatorServiceServer) GetClusterMetadata(context.Context, *GetClusterMetadataRequest) (*GetClusterMetadataResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetClusterMetadata not implemented")
+}
+func (UnimplementedCoordinatorServiceServer) mustEmbedUnimplementedCoordinatorServiceServer() {}
+func (UnimplementedCoordinatorServiceServer) testEmbeddedByValue()                            {}
+
+// UnsafeCoordinatorServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CoordinatorServiceServer will
+// result in compilation errors.
+type UnsafeCoordinatorServiceServer interface {
+	mustEmbedUnimplementedCoordinatorServiceServer()
+}
+
+func RegisterCoordinatorServiceServer(s grpc.ServiceRegistrar, srv CoordinatorServiceServer) {
+	// If the following call panics, it indicates UnimplementedCoordinatorServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&CoordinatorService_ServiceDesc, srv)
+}
+
+func _CoordinatorService_JoinCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JoinClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServiceServer).JoinCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CoordinatorService_JoinCluster_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServiceServer).JoinCluster(ctx, req.(*JoinClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CoordinatorService_RegisterBroker_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterBrokerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServiceServer).RegisterBroker(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CoordinatorService_RegisterBroker_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServiceServer).RegisterBroker(ctx, req.(*RegisterBrokerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CoordinatorService_CreateTopic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTopicRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServiceServer).CreateTopic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CoordinatorService_CreateTopic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServiceServer).CreateTopic(ctx, req.(*CreateTopicRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CoordinatorService_GetClusterMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetClusterMetadataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoordinatorServiceServer).GetClusterMetadata(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CoordinatorService_GetClusterMetadata_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoordinatorServiceServer).GetClusterMetadata(ctx, req.(*GetClusterMetadataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// CoordinatorService_ServiceDesc is the grpc.ServiceDesc for CoordinatorService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var CoordinatorService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "ravenmq.v1.CoordinatorService",
+	HandlerType: (*CoordinatorServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "JoinCluster",
+			Handler:    _CoordinatorService_JoinCluster_Handler,
+		},
+		{
+			MethodName: "RegisterBroker",
+			Handler:    _CoordinatorService_RegisterBroker_Handler,
+		},
+		{
+			MethodName: "CreateTopic",
+			Handler:    _CoordinatorService_CreateTopic_Handler,
+		},
+		{
+			MethodName: "GetClusterMetadata",
+			Handler:    _CoordinatorService_GetClusterMetadata_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "api/proto/v1/ravenmq.proto",
+}

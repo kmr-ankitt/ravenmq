@@ -59,3 +59,63 @@ message ConsumeResponse {
     ErrorCode error_code = 2; // Result of the consume operation.
     string leader_address = 3; // Address of the current partition leader, if applicable.
 }
+
+service CoordinatorService {
+    rpc JoinCluster(JoinClusterRequest) returns (JoinClusterResponse);
+    rpc RegisterBroker(RegisterBrokerRequest) returns (RegisterBrokerResponse);
+    rpc CreateTopic(CreateTopicRequest) returns (CreateTopicResponse);
+    rpc GetClusterMetadata(GetClusterMetadataRequest) returns (GetClusterMetadataResponse);
+}
+
+message JoinClusterRequest {
+    string node_id = 1;
+    string raft_addr = 2;
+    string grpc_addr = 3;
+}
+
+message JoinClusterResponse {
+    bool success = 1;
+    string leader_address = 2;
+}
+
+message RegisterBrokerRequest {
+    int32 broker_id = 1;
+    string grpc_addr = 2;
+}
+
+message RegisterBrokerResponse {
+    bool success = 1;
+    string leader_address = 2;
+}
+
+message CreateTopicRequest {
+    string topic = 1;
+    int32 partitions = 2;
+}
+
+message CreateTopicResponse {
+    ErrorCode error_code = 1;
+    string leader_address = 2;
+}
+
+message GetClusterMetadataRequest {}
+
+message BrokerInfo {
+    int32 broker_id = 1;
+    string grpc_addr = 2;
+}
+
+message PartitionInfo {
+    int32 partition_id = 1;
+    int32 leader_broker_id = 2;
+}
+
+message TopicMetadata {
+    string topic = 1;
+    repeated PartitionInfo partitions = 2;
+}
+
+message GetClusterMetadataResponse {
+    repeated BrokerInfo brokers = 1;
+    repeated TopicMetadata topics = 2;
+}
