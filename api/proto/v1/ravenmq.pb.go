@@ -24,11 +24,12 @@ const (
 type ErrorCode int32
 
 const (
-	ErrorCode_ERROR_CODE_UNSPECIFIED          ErrorCode = 0
-	ErrorCode_ERROR_CODE_NONE                 ErrorCode = 1
-	ErrorCode_ERROR_CODE_NOT_LEADER           ErrorCode = 2
-	ErrorCode_ERROR_CODE_TOPIC_NOT_FOUND      ErrorCode = 3
-	ErrorCode_ERROR_CODE_OFFSET_OUT_OF_BOUNDS ErrorCode = 4
+	ErrorCode_ERROR_CODE_UNSPECIFIED           ErrorCode = 0
+	ErrorCode_ERROR_CODE_NONE                  ErrorCode = 1
+	ErrorCode_ERROR_CODE_NOT_LEADER            ErrorCode = 2
+	ErrorCode_ERROR_CODE_TOPIC_NOT_FOUND       ErrorCode = 3
+	ErrorCode_ERROR_CODE_OFFSET_OUT_OF_BOUNDS  ErrorCode = 4
+	ErrorCode_ERROR_CODE_REBALANCE_IN_PROGRESS ErrorCode = 5
 )
 
 // Enum value maps for ErrorCode.
@@ -39,13 +40,15 @@ var (
 		2: "ERROR_CODE_NOT_LEADER",
 		3: "ERROR_CODE_TOPIC_NOT_FOUND",
 		4: "ERROR_CODE_OFFSET_OUT_OF_BOUNDS",
+		5: "ERROR_CODE_REBALANCE_IN_PROGRESS",
 	}
 	ErrorCode_value = map[string]int32{
-		"ERROR_CODE_UNSPECIFIED":          0,
-		"ERROR_CODE_NONE":                 1,
-		"ERROR_CODE_NOT_LEADER":           2,
-		"ERROR_CODE_TOPIC_NOT_FOUND":      3,
-		"ERROR_CODE_OFFSET_OUT_OF_BOUNDS": 4,
+		"ERROR_CODE_UNSPECIFIED":           0,
+		"ERROR_CODE_NONE":                  1,
+		"ERROR_CODE_NOT_LEADER":            2,
+		"ERROR_CODE_TOPIC_NOT_FOUND":       3,
+		"ERROR_CODE_OFFSET_OUT_OF_BOUNDS":  4,
+		"ERROR_CODE_REBALANCE_IN_PROGRESS": 5,
 	}
 )
 
@@ -1762,13 +1765,14 @@ const file_api_proto_v1_ravenmq_proto_rawDesc = "" +
 	"\x13FetchOffsetResponse\x124\n" +
 	"\n" +
 	"error_code\x18\x01 \x01(\x0e2\x15.ravenmq.v1.ErrorCodeR\terrorCode\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x04R\x06offset*\x9c\x01\n" +
+	"\x06offset\x18\x02 \x01(\x04R\x06offset*\xc2\x01\n" +
 	"\tErrorCode\x12\x1a\n" +
 	"\x16ERROR_CODE_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fERROR_CODE_NONE\x10\x01\x12\x19\n" +
 	"\x15ERROR_CODE_NOT_LEADER\x10\x02\x12\x1e\n" +
 	"\x1aERROR_CODE_TOPIC_NOT_FOUND\x10\x03\x12#\n" +
-	"\x1fERROR_CODE_OFFSET_OUT_OF_BOUNDS\x10\x04*N\n" +
+	"\x1fERROR_CODE_OFFSET_OUT_OF_BOUNDS\x10\x04\x12$\n" +
+	" ERROR_CODE_REBALANCE_IN_PROGRESS\x10\x05*N\n" +
 	"\bAckLevel\x12\x19\n" +
 	"\x15ACK_LEVEL_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10ACK_LEVEL_LEADER\x10\x01\x12\x11\n" +
