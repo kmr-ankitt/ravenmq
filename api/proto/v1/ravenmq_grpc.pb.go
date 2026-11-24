@@ -373,3 +373,258 @@ var CoordinatorService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "api/proto/v1/ravenmq.proto",
 }
+
+const (
+	GroupCoordinatorService_JoinGroup_FullMethodName    = "/ravenmq.v1.GroupCoordinatorService/JoinGroup"
+	GroupCoordinatorService_SyncGroup_FullMethodName    = "/ravenmq.v1.GroupCoordinatorService/SyncGroup"
+	GroupCoordinatorService_Heartbeat_FullMethodName    = "/ravenmq.v1.GroupCoordinatorService/Heartbeat"
+	GroupCoordinatorService_CommitOffset_FullMethodName = "/ravenmq.v1.GroupCoordinatorService/CommitOffset"
+	GroupCoordinatorService_FetchOffset_FullMethodName  = "/ravenmq.v1.GroupCoordinatorService/FetchOffset"
+)
+
+// GroupCoordinatorServiceClient is the client API for GroupCoordinatorService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type GroupCoordinatorServiceClient interface {
+	JoinGroup(ctx context.Context, in *JoinGroupRequest, opts ...grpc.CallOption) (*JoinGroupResponse, error)
+	SyncGroup(ctx context.Context, in *SyncGroupRequest, opts ...grpc.CallOption) (*SyncGroupResponse, error)
+	Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error)
+	CommitOffset(ctx context.Context, in *CommitOffsetRequest, opts ...grpc.CallOption) (*CommitOffsetResponse, error)
+	FetchOffset(ctx context.Context, in *FetchOffsetRequest, opts ...grpc.CallOption) (*FetchOffsetResponse, error)
+}
+
+type groupCoordinatorServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewGroupCoordinatorServiceClient(cc grpc.ClientConnInterface) GroupCoordinatorServiceClient {
+	return &groupCoordinatorServiceClient{cc}
+}
+
+func (c *groupCoordinatorServiceClient) JoinGroup(ctx context.Context, in *JoinGroupRequest, opts ...grpc.CallOption) (*JoinGroupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(JoinGroupResponse)
+	err := c.cc.Invoke(ctx, GroupCoordinatorService_JoinGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *groupCoordinatorServiceClient) SyncGroup(ctx context.Context, in *SyncGroupRequest, opts ...grpc.CallOption) (*SyncGroupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SyncGroupResponse)
+	err := c.cc.Invoke(ctx, GroupCoordinatorService_SyncGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *groupCoordinatorServiceClient) Heartbeat(ctx context.Context, in *HeartbeatRequest, opts ...grpc.CallOption) (*HeartbeatResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HeartbeatResponse)
+	err := c.cc.Invoke(ctx, GroupCoordinatorService_Heartbeat_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *groupCoordinatorServiceClient) CommitOffset(ctx context.Context, in *CommitOffsetRequest, opts ...grpc.CallOption) (*CommitOffsetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CommitOffsetResponse)
+	err := c.cc.Invoke(ctx, GroupCoordinatorService_CommitOffset_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *groupCoordinatorServiceClient) FetchOffset(ctx context.Context, in *FetchOffsetRequest, opts ...grpc.CallOption) (*FetchOffsetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FetchOffsetResponse)
+	err := c.cc.Invoke(ctx, GroupCoordinatorService_FetchOffset_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// GroupCoordinatorServiceServer is the server API for GroupCoordinatorService service.
+// All implementations must embed UnimplementedGroupCoordinatorServiceServer
+// for forward compatibility.
+type GroupCoordinatorServiceServer interface {
+	JoinGroup(context.Context, *JoinGroupRequest) (*JoinGroupResponse, error)
+	SyncGroup(context.Context, *SyncGroupRequest) (*SyncGroupResponse, error)
+	Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error)
+	CommitOffset(context.Context, *CommitOffsetRequest) (*CommitOffsetResponse, error)
+	FetchOffset(context.Context, *FetchOffsetRequest) (*FetchOffsetResponse, error)
+	mustEmbedUnimplementedGroupCoordinatorServiceServer()
+}
+
+// UnimplementedGroupCoordinatorServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedGroupCoordinatorServiceServer struct{}
+
+func (UnimplementedGroupCoordinatorServiceServer) JoinGroup(context.Context, *JoinGroupRequest) (*JoinGroupResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method JoinGroup not implemented")
+}
+func (UnimplementedGroupCoordinatorServiceServer) SyncGroup(context.Context, *SyncGroupRequest) (*SyncGroupResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SyncGroup not implemented")
+}
+func (UnimplementedGroupCoordinatorServiceServer) Heartbeat(context.Context, *HeartbeatRequest) (*HeartbeatResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Heartbeat not implemented")
+}
+func (UnimplementedGroupCoordinatorServiceServer) CommitOffset(context.Context, *CommitOffsetRequest) (*CommitOffsetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CommitOffset not implemented")
+}
+func (UnimplementedGroupCoordinatorServiceServer) FetchOffset(context.Context, *FetchOffsetRequest) (*FetchOffsetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method FetchOffset not implemented")
+}
+func (UnimplementedGroupCoordinatorServiceServer) mustEmbedUnimplementedGroupCoordinatorServiceServer() {
+}
+func (UnimplementedGroupCoordinatorServiceServer) testEmbeddedByValue() {}
+
+// UnsafeGroupCoordinatorServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GroupCoordinatorServiceServer will
+// result in compilation errors.
+type UnsafeGroupCoordinatorServiceServer interface {
+	mustEmbedUnimplementedGroupCoordinatorServiceServer()
+}
+
+func RegisterGroupCoordinatorServiceServer(s grpc.ServiceRegistrar, srv GroupCoordinatorServiceServer) {
+	// If the following call panics, it indicates UnimplementedGroupCoordinatorServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&GroupCoordinatorService_ServiceDesc, srv)
+}
+
+func _GroupCoordinatorService_JoinGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JoinGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupCoordinatorServiceServer).JoinGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupCoordinatorService_JoinGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupCoordinatorServiceServer).JoinGroup(ctx, req.(*JoinGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GroupCoordinatorService_SyncGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SyncGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupCoordinatorServiceServer).SyncGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupCoordinatorService_SyncGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupCoordinatorServiceServer).SyncGroup(ctx, req.(*SyncGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GroupCoordinatorService_Heartbeat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HeartbeatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupCoordinatorServiceServer).Heartbeat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupCoordinatorService_Heartbeat_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupCoordinatorServiceServer).Heartbeat(ctx, req.(*HeartbeatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GroupCoordinatorService_CommitOffset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommitOffsetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupCoordinatorServiceServer).CommitOffset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupCoordinatorService_CommitOffset_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupCoordinatorServiceServer).CommitOffset(ctx, req.(*CommitOffsetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GroupCoordinatorService_FetchOffset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchOffsetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupCoordinatorServiceServer).FetchOffset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GroupCoordinatorService_FetchOffset_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupCoordinatorServiceServer).FetchOffset(ctx, req.(*FetchOffsetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// GroupCoordinatorService_ServiceDesc is the grpc.ServiceDesc for GroupCoordinatorService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var GroupCoordinatorService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "ravenmq.v1.GroupCoordinatorService",
+	HandlerType: (*GroupCoordinatorServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "JoinGroup",
+			Handler:    _GroupCoordinatorService_JoinGroup_Handler,
+		},
+		{
+			MethodName: "SyncGroup",
+			Handler:    _GroupCoordinatorService_SyncGroup_Handler,
+		},
+		{
+			MethodName: "Heartbeat",
+			Handler:    _GroupCoordinatorService_Heartbeat_Handler,
+		},
+		{
+			MethodName: "CommitOffset",
+			Handler:    _GroupCoordinatorService_CommitOffset_Handler,
+		},
+		{
+			MethodName: "FetchOffset",
+			Handler:    _GroupCoordinatorService_FetchOffset_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "api/proto/v1/ravenmq.proto",
+}

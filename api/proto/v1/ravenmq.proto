@@ -119,3 +119,74 @@ message GetClusterMetadataResponse {
     repeated BrokerInfo brokers = 1;
     repeated TopicMetadata topics = 2;
 }
+
+service GroupCoordinatorService {
+    rpc JoinGroup(JoinGroupRequest) returns (JoinGroupResponse);
+    rpc SyncGroup(SyncGroupRequest) returns (SyncGroupResponse);
+    rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+    rpc CommitOffset(CommitOffsetRequest) returns (CommitOffsetResponse);
+    rpc FetchOffset(FetchOffsetRequest) returns (FetchOffsetResponse);
+}
+
+message JoinGroupRequest {
+    string group_id = 1;
+    string member_id = 2; // empty on first join; server assigns a unique ID
+    string topic = 3;
+}
+
+message JoinGroupResponse {
+    ErrorCode error_code = 1;
+    string member_id = 2;
+    int32 generation_id = 3;
+    string leader_id = 4;
+    repeated string members = 5; // populated for the group leader so it can assign partitions
+}
+
+message MemberAssignment {
+    string member_id = 1;
+    repeated int32 partitions = 2;
+}
+
+message SyncGroupRequest {
+    string group_id = 1;
+    string member_id = 2;
+    int32 generation_id = 3;
+    repeated MemberAssignment assignments = 4; // sent only by the group leader
+}
+
+message SyncGroupResponse {
+    ErrorCode error_code = 1;
+    repeated int32 assigned_partitions = 2;
+}
+
+message HeartbeatRequest {
+    string group_id = 1;
+    string member_id = 2;
+    int32 generation_id = 3;
+}
+
+message HeartbeatResponse {
+    ErrorCode error_code = 1;
+}
+
+message CommitOffsetRequest {
+    string group_id = 1;
+    string topic = 2;
+    int32 partition = 3;
+    uint64 offset = 4;
+}
+
+message CommitOffsetResponse {
+    ErrorCode error_code = 1;
+}
+
+message FetchOffsetRequest {
+    string group_id = 1;
+    string topic = 2;
+    int32 partition = 3;
+}
+
+message FetchOffsetResponse {
+    ErrorCode error_code = 1;
+    uint64 offset = 2;
+}
