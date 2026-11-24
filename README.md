@@ -25,21 +25,6 @@ idempotent producer deduplication, consumer group rebalancing, a Go SDK, and a C
 - CLI (`ravenctl`) and Docker Compose cluster — create topics, inspect metadata, produce/consume from the terminal, and run a 5-node cluster in containers
 - Single gRPC/Protobuf API surface with reflection enabled
 
-## Architecture
-
-![Cluster Overview](docs/img/01-cluster-overview.svg)
-
-| Component | Package / Binary | Responsibilities |
-| :--- | :--- | :--- |
-| **Coordinator** | `cmd/coordinator`, `internal/coordinator` | Raft-replicated cluster metadata: broker registry and topic/partition-leader assignment. Round-robin assignment by sorted broker ID. |
-| **Group Coordinator** | `internal/groupcoord` | Co-hosted on the Coordinator. Consumer group membership, partition assignment distribution, heartbeats, offset commit/fetch — all in-memory, not Raft-replicated. |
-| **Broker** | `cmd/broker`, `internal/broker` | Serves `Produce`/`Consume`. Each partition is owned by exactly one broker; writes go straight to that broker's local commit log, bypassing Raft. |
-| **Commit Log Storage** | `internal/store` | Append-only `<partition>.log` with length-prefixed records, plus a `.state` sidecar persisting last-applied offset and per-producer sequence numbers for idempotent writes. |
-| **Client SDK** | `pkg/ravenmq` | `Producer` (key-hashed or round-robin routing) and `Consumer` (group join/rebalance, heartbeats, offset commit). |
-| **CLI (`ravenctl`)** | `cmd/ravenctl` | Command-line client for creating topics, inspecting cluster metadata, producing messages, and consuming in consumer groups. |
-
-See [docs/Architecture.md](docs/Architecture.md) for design rationale, ADRs, and the full roadmap.
-
 ## Project layout
 
 ```text
@@ -61,6 +46,8 @@ ravenmq/
 └── pkg/ravenmq/           # Go Producer & Consumer SDK + end-to-end integration test
 
 ```
+
+See [docs/Architecture.md](docs/Architecture.md) for design rationale, ADRs, and the full roadmap.
 
 ---
 
