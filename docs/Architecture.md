@@ -23,7 +23,7 @@ RavenMQ uses Raft for cluster metadata and direct broker connections for durable
 - **Control-plane consensus, data-plane throughput.** Cluster metadata (broker registry, topics, and partition leader assignments) is replicated via Raft, while message writes and reads go directly to partition leader brokers without consensus round-trips.
 - **Idempotent production.** Retries after a timeout or transient network error must not create duplicate records.
 - **Kafka-style consumption.** Consumer groups with automatic leader election, round-robin partition assignment, heartbeats, and byte-offset checkpointing.
-- **Small operational surface.** Two static Go binaries (`coordinator` and `broker`) with no external coordinator dependency such as ZooKeeper or etcd.
+- **Small operational surface.** Static Go binaries (`coordinator`, `broker`, `ravenctl`) deployable bare-metal or via Docker Compose with no external coordinator dependency such as ZooKeeper or etcd.
 
 ### Non-Goals (for now)
 
@@ -37,11 +37,12 @@ RavenMQ uses Raft for cluster metadata and direct broker connections for durable
 
 ![Cluster overview](img/01-cluster-overview.svg)
 
-RavenMQ separates control-plane coordination from data-plane storage across two binaries and a smart Go client SDK (`pkg/ravenmq`):
+RavenMQ separates control-plane coordination from data-plane storage across server binaries, a smart Go client SDK (`pkg/ravenmq`), and an admin CLI (`cmd/ravenctl`):
 
 - **Coordinator (`cmd/coordinator`)**: Runs a `hashicorp/raft` cluster backed by BoltDB (`raft.db`) and co-hosts `CoordinatorService` and `GroupCoordinatorService` on a single gRPC endpoint.
-- **Broker (`cmd/broker`)**: Self-registers with the Coordinator on startup, owns assigned topic partitions, and serves `BrokerService` (`Produce` and `Consume`) directly from local disk commit logs.
+- **Broker (`cmd/broker`)**: Binds `-addr`, self-registers `-advertise-addr` (defaulting to `-addr`) with the Coordinator on startup, owns assigned topic partitions, and serves `BrokerService` (`Produce` and `Consume`) directly from local disk commit logs.
 - **Client SDK (`pkg/ravenmq`)**: Discovers topology via `GetClusterMetadata`, caches partition routes, pools gRPC broker connections, and manages consumer group lifecycles.
+- **CLI (`cmd/ravenctl`)**: Wraps `CoordinatorService` and `pkg/ravenmq` to provide `topic create`, `metadata`, `produce`, and `consume` subcommands.
 
 ### Request Routing
 
@@ -61,8 +62,8 @@ RavenMQ separates control-plane coordination from data-plane storage across two 
 
 ### 3.1 Cluster Metadata Path (Coordinator Raft FSM)
 
-1. Brokers announce themselves on startup via `RegisterBroker(broker_id, grpc_addr)` (with retries during leader election).
-2. Clients or operators create topics via `CreateTopic(topic, partitions)`.
+1. Brokers announce themselves on startup via `RegisterBroker(broker_id, advertise_addr)` (with up to 5 retries during leader election).
+2. Clients or `ravenctl` create topics via `CreateTopic(topic, partitions)`.
 3. The Coordinator Raft leader serializes a `Command` (`register_broker` or `create_topic`) and proposes it to `hashicorp/raft`.
 4. Once committed by quorum, `coordinator.FSM.Apply()` updates the broker registry or assigns partitions deterministically across sorted broker IDs using round-robin (`brokerIDs[p % len(brokerIDs)]`).
 5. Snapshots (`FSM.Snapshot` / `FSM.Restore`) serialize the broker and topic maps as JSON so new or restarting Coordinators recover topology rapidly.
@@ -113,7 +114,7 @@ Group membership and offset tracking are implemented in `internal/groupcoord/ser
 
 ### 5.1 File Layout
 
-Each `<topic>/<partition>` maps to two files under the broker's `--data-dir`:
+Each `<topic>/<partition>` maps to two files under the broker's `-data-dir`:
 
 ```text
 <data-dir>/<topic>/
@@ -160,16 +161,23 @@ Records are written sequentially as `[8-byte big-endian uint64 length][N-byte pa
 | 1 | **Coordinator** | `cmd/coordinator`, `internal/coordinator` | Control | Raft-backed cluster topology: broker registry, topics, deterministic partition leaders. |
 | 2 | **Consumer Group** | `internal/groupcoord` *(co-hosted on Coordinator)* | Control | `JoinGroup`, `SyncGroup`, `Heartbeat`, `CommitOffset`, `FetchOffset`. |
 | 3 | **Broker** | `cmd/broker`, `internal/broker`, `internal/store` | Data | gRPC `Produce` / `Consume` and disk-backed commit logs. |
-| 4 | **Client SDK** | `pkg/ravenmq` | Client | Topology caching, key/round-robin routing, group leader assignment, heartbeats, offset commits. |
+| 4 | **Client SDK & CLI** | `pkg/ravenmq`, `cmd/ravenctl` | Client | Topology caching, key/round-robin routing, group leader assignment, heartbeats, offset commits, and CLI operations. |
 
 ### 6.2 Interaction Flows
 
 | Flow | Direction | Purpose |
 | --- | --- | --- |
-| ① Discover topology | SDK → Coordinator | `GetClusterMetadata` fetches broker addresses and partition leaders. |
+| ① Discover topology | SDK / CLI → Coordinator | `GetClusterMetadata` fetches broker addresses and partition leaders. |
 | ② Join group, heartbeat & offsets | Consumer SDK → GroupCoordinator | Group rebalancing, liveness checks, and byte-offset checkpointing. |
 | ③ Produce & consume records | Producer/Consumer SDK → Broker | Direct data-plane RPCs; the Coordinator is **not** in the message hot path. |
-| ④ Broker self-registration | Broker → Coordinator | `RegisterBroker` announces broker availability on startup. |
+| ④ Broker self-registration | Broker → Coordinator | `RegisterBroker` announces the broker's advertised gRPC address on startup. |
+
+### 6.3 Containerized Deployment (`deploy/docker-compose.yml`)
+
+`deploy/Dockerfile` builds static `coordinator`, `broker`, and `ravenctl` binaries, and `deploy/docker-compose.yml` runs a 5-container cluster with named persistent volumes:
+
+* **`coord-1`, `coord-2`, `coord-3**`: 3-node Raft quorum (`coord-1` bootstrapped; `coord-2` and `coord-3` join via `-join=coord-1:8001`), mapped to host ports `8001`–`8003`.
+* **`broker-1`, `broker-2**`: Bind `0.0.0.0:9001` / `0.0.0.0:9002` inside the container network and register `-advertise-addr=127.0.0.1:9001` / `127.0.0.1:9002` so host-side SDK and `ravenctl` clients connect directly over mapped ports `9001`–`9002`.
 
 ---
 
@@ -219,7 +227,7 @@ Records are written sequentially as `[8-byte big-endian uint64 length][N-byte pa
 ### ADR-006 — gRPC and Protocol Buffers (`api/proto/v1/ravenmq.proto`)
 
 * **Decision.** Define `BrokerService`, `CoordinatorService`, and `GroupCoordinatorService` in `api/proto/v1/ravenmq.proto` with server reflection enabled.
-* **Why.** Provides strongly typed Go stubs and easy inspection via `grpcurl`.
+* **Why.** Provides strongly typed Go stubs and easy inspection via `grpcurl` or `ravenctl`.
 
 ---
 
