@@ -1,2 +1,9 @@
 /target
+bin/
+ravenctl
+coordinator
+broker
 data/
+*.log
+*.state
+*.db
