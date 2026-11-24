@@ -12,6 +12,7 @@ import (
 
 	ravenmqv1 "github.com/kmr-ankitt/ravenmq/api/proto/v1"
 	"github.com/kmr-ankitt/ravenmq/internal/coordinator"
+	"github.com/kmr-ankitt/ravenmq/internal/groupcoord"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
@@ -42,8 +43,11 @@ func main() {
 		log.Fatalf("failed to initialize coordinator: %v", err)
 	}
 
+	groupSrv := groupcoord.NewServer()
+
 	grpcServer := grpc.NewServer()
 	ravenmqv1.RegisterCoordinatorServiceServer(grpcServer, srv)
+	ravenmqv1.RegisterGroupCoordinatorServiceServer(grpcServer, groupSrv)
 	reflection.Register(grpcServer)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
@@ -81,7 +85,7 @@ steps:
 3. log a warning if the seed node is not the current Raft leader.
 
 Returns:
-- an error if dialing or the RPC fails, or nil on completion.
+- an error if dialing or the RPC fails, or nil on success.
 */
 func joinCluster(seedAddr, nodeID, raftAddr, grpcAddr string) error {
 	conn, err := grpc.NewClient(seedAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
