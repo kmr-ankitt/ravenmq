@@ -1,8 +1,15 @@
+<div align="center">
+
+<img src="docs/img/ravenmq.png" width="175" alt="RavenMQ logo">
+
 # RavenMQ
 
-A distributed, partitioned message broker written from scratch in Go.
-It combines a Raft-backed metadata control plane, disk-persisted append-only commit logs with idempotent producer deduplication,
-consumer group rebalancing, a Go client SDK, and a CLI tool over gRPC.
+**A distributed, partitioned message broker built for reliable event streaming.**
+
+</div>
+
+A message broker written from scratch in Go, combining a Raft-backed metadata control plane, disk-persisted append-only commit logs,
+idempotent producer deduplication, consumer group rebalancing, a Go SDK, and a CLI over gRPC.
 
 ## Features
 
