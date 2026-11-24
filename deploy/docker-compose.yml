@@ -1,0 +1,95 @@
+services:
+  coord-1:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    command:
+      - coordinator
+      - -node-id=coord-1
+      - -raft-addr=coord-1:7001
+      - -grpc-addr=0.0.0.0:8001
+      - -data-dir=/data/coord-1
+      - -bootstrap
+    ports:
+      - "8001:8001"
+    volumes:
+      - coord1-data:/data/coord-1
+
+  coord-2:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    depends_on:
+      - coord-1
+    command:
+      - coordinator
+      - -node-id=coord-2
+      - -raft-addr=coord-2:7002
+      - -grpc-addr=0.0.0.0:8002
+      - -data-dir=/data/coord-2
+      - -join=coord-1:8001
+    ports:
+      - "8002:8002"
+    volumes:
+      - coord2-data:/data/coord-2
+
+  coord-3:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    depends_on:
+      - coord-1
+    command:
+      - coordinator
+      - -node-id=coord-3
+      - -raft-addr=coord-3:7003
+      - -grpc-addr=0.0.0.0:8003
+      - -data-dir=/data/coord-3
+      - -join=coord-1:8001
+    ports:
+      - "8003:8003"
+    volumes:
+      - coord3-data:/data/coord-3
+
+  broker-1:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    depends_on:
+      - coord-1
+    command:
+      - broker
+      - -broker-id=1
+      - -addr=0.0.0.0:9001
+      - -advertise-addr=127.0.0.1:9001
+      - -data-dir=/data/broker-1
+      - -coordinator=coord-1:8001
+    ports:
+      - "9001:9001"
+    volumes:
+      - broker1-data:/data/broker-1
+
+  broker-2:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    depends_on:
+      - coord-1
+    command:
+      - broker
+      - -broker-id=2
+      - -addr=0.0.0.0:9002
+      - -advertise-addr=127.0.0.1:9002
+      - -data-dir=/data/broker-2
+      - -coordinator=coord-1:8001
+    ports:
+      - "9002:9002"
+    volumes:
+      - broker2-data:/data/broker-2
+
+volumes:
+  coord1-data:
+  coord2-data:
+  coord3-data:
+  broker1-data:
+  broker2-data:
