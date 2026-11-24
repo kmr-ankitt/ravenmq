@@ -21,6 +21,7 @@ import (
 func main() {
 	brokerID := flag.Int("broker-id", 1, "unique numeric ID for this broker")
 	addr := flag.String("addr", "127.0.0.1:9001", "gRPC listen address")
+	advertiseAddr := flag.String("advertise-addr", "", "gRPC address advertised to Coordinator (defaults to -addr)")
 	dataDir := flag.String("data-dir", "./data/broker-1", "directory for commit logs")
 	coordAddr := flag.String("coordinator", "", "Coordinator gRPC address for self-registration")
 	flag.Parse()
@@ -50,10 +51,14 @@ func main() {
 	}()
 
 	if *coordAddr != "" {
-		if err := registerWithCoordinator(*coordAddr, int32(*brokerID), *addr); err != nil {
+		regAddr := *addr
+		if *advertiseAddr != "" {
+			regAddr = *advertiseAddr
+		}
+		if err := registerWithCoordinator(*coordAddr, int32(*brokerID), regAddr); err != nil {
 			log.Fatalf("failed to register broker with coordinator: %v", err)
 		}
-		log.Printf("registered broker %d (%s) with coordinator", *brokerID, *addr)
+		log.Printf("registered broker %d (%s) with coordinator", *brokerID, regAddr)
 	}
 
 	<-ctx.Done()
